@@ -1,0 +1,320 @@
+<!--客戶基本資料資料庫：須能新增資料、刪除資料、修改資料、查詢資料及列印資料，其中
+新增資料：新增客戶資料，客戶均為自然人，不必考慮以公司名稱購買者。
+刪除資料：係將資料之消費狀態由「正常」改成「停用」，而不是真的刪除。
+修改資料：當客戶資料與事實不符時，例如，住址或電話變更，用以修改。
+查詢資料：必須至少能以身分證字號查詢。
+列印資料：能依查詢要求列印查詢結果資料。
+-->
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v3.8.5">
+    <title>資料庫實做題目(三)</title>
+
+    <!-- Bootstrap core CSS -->
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <script type="text/javascript"
+        src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=h9B3vfHHH5zCFrXFln1kn9AgbYOMdSfB1ATA5lbuX65vaS3mdrDnKUKP_f3QyGLqoUF9rQGZ0QOqZIn9Dll2RtWDMZDytZ4D8TFb9jQFjEo"
+        charset="UTF-8"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous">
+    </script>
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+
+</head>
+
+<body class="py-4">
+    <div class="container-fluid">
+        <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">期末資料庫專題第三題</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
+                aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">客戶基本資料 <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./order_record">客戶訂貨記錄</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="#">公司進貨資料</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="#">公司應收帳款資料</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                            aria-haspopup="true" aria-expanded="false">使用者介面</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">客戶基本資料</a>
+                            <a class="dropdown-item" href="#">客戶訂貨記錄</a>
+                            <a class="dropdown-item" href="#">公司進貨資料</a>
+                            <a class="dropdown-item" href="#">公司應收帳款</a>
+                            <a class="dropdown-item" href="#">跨資料庫整合</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <form class="form-inline my-2 my-lg-0">
+                <button class="btn btn-outline-success my-2 my-sm-0" onclick="printme()" rel="external nofollow"
+                    target="_self">列印搜尋結果</button>
+            </form>
+        </nav>
+    </div>
+    <div class="container-fluid" style="padding-top:50px ;">
+
+        <div class="row">
+            <div class="col">
+                <h1>客戶基本資料</h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <form action="/addClient" autocomplete="off" method="post">
+                    <div class="form-row">
+                        <div class="col">
+                            <label>客戶姓名</label>
+                            <% if(update){ %>
+                            <input type="text" class="form-control" placeholder="name" id="name" name="name"
+                                value="<%- client[0][0] %>">
+
+                            <% } else { %>
+                            <input type="text" class="form-control" placeholder="name" id="name" name="name">
+                            <%} %>
+
+
+                        </div>
+
+                    </div>
+                    <div class="form-row">
+                        <div class="col ">
+                            <label>身分證字號</label>
+                            <% if(update){ %>
+                            <input type="text" class="form-control" placeholder="ID card" id="id_card" name="id_card"
+                                value="<%- client[0][1] %>" readonly>
+
+                            <% } else { %>
+                            <input type="text" class="form-control" placeholder="ID card" id="id_card" name="id_card">
+                            <%} %>
+
+                        </div>
+                        <div class="col">
+                            <label>電話</label>
+                            <% if(update){ %>
+                            <input type="text" class="form-control" placeholder="telephone" id="telephone"
+                                name="telephone" value="<%- client[0][2] %>">
+
+                            <% } else { %>
+                            <input type="text" class="form-control" placeholder="telephone" id="telephone"
+                                name="telephone">
+                            <%} %>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>住址</label>
+                        <% if(update){ %>
+                        <input type="text" class="form-control" placeholder="address" id="address" name="address"
+                            value="<%- client[0][3] %>">
+
+                        <% } else { %>
+                        <input type="text" class="form-control" pplaceholder="address" id="address" name="address">
+                        <%} %>
+
+                    </div>
+                    <div class="form-row">
+                        <div class="col">
+                            <label>年齡</label>
+                            <% if(update){ %>
+                            <input type="text" class="form-control" placeholder="age" id="age" name="age"
+                                value="<%- client[0][4] %>">
+
+                            <% } else { %>
+                            <input type="text" class="form-control" placeholder="age" id="age" name="age">
+                            <%} %>
+                        </div>
+                        <div class="col">
+                            <label>職業</label>
+                            <% if(update){ %>
+                            <input type="text" class="form-control" pplaceholder="profession" id="profession"
+                                name="profession" value="<%- client[0][5] %>">
+
+                            <% } else { %>
+                            <input type="text" class="form-control" placeholder="profession" id="profession"
+                                name="profession">
+                            <%} %>
+
+                        </div>
+                        <div class="col">
+                            <label>登載日期</label>
+                            <% if(update){ %>
+                            <input type="date" class="form-control" placeholder="date" id="date" name="date"
+                                value="<%- client[0][6] %>">
+
+                            <% } else { %>
+                            <input type="date" class="form-control" placeholder="date" id="date" name="date">
+                            <%} %>
+
+
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-8">
+                            <label>照片</label>
+
+                            <div class="custom-file">
+
+                                <input type="file" class="custom-file-input" id="picture" name="picture">
+                                <label class="custom-file-label" for="customFile">Choose file</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <label>消費狀態</label>
+                            <% if(update){ %>
+                            <select class="custom-select mr-sm-2" id="status" name="status">
+
+                                <option value="正常">正常</option>
+                                <option value="停用">停用</option>
+                            </select>
+
+                            <% } else { %>
+                            <select class="custom-select mr-sm-2" id="status" name="status">
+
+                                <option value="正常">正常</option>
+                                <option value="停用">停用</option>
+                            </select>
+                            <%} %>
+
+                        </div>
+
+                    </div>
+                    <% if(update){ %>
+                    <input type="hidden" name="update" value="true">
+
+                    <% } else { %>
+
+                    <input type="hidden" name="update" value="false">
+                    <%} %>
+                    <button type="submit" class="btn btn-primary " style="margin-top: 20px;"
+                        value="submit">Submit</button>
+                </form>
+            </div>
+            <div class="col-12 col-md-6">
+                <form class="form-inline my-2 my-lg-0" action="/searchClient" autocomplete="off" method="post">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"
+                        name="id_card">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+
+                </form>
+                <span id='div1'>
+                    <table class="table" id="clientList">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">客戶姓名</th>
+                                <th scope="col">身分證字號</th>
+                                <th scope="col">電話</th>
+                                <th scope="col">住址</th>
+                                <th scope="col">年齡</th>
+                                <th scope="col">職業</th>
+                                <th scope="col">登載日期</th>
+                                <th scope="col">照片</th>
+                                <th scope="col">消費狀態</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+
+                            <% for(var i = 0 ; client.length>i;i++){ %>
+                            <th scope="row"><%- i+1 %></th>
+                            <td> <%- client[i][0] %></td>
+                            <td> <%- client[i][1] %></td>
+                            <td> <%- client[i][2] %></td>
+                            <td> <%- client[i][3] %></td>
+                            <td> <%- client[i][4] %></td>
+                            <td> <%- client[i][5] %></td>
+                            <td> <%- client[i][6] %></td>
+                            <td> <%- client[i][7] %></td>
+                            <td> <%- client[i][8] %></td>
+                            <td>
+                                <form action="/updateClient" autocomplete="off" method="post">
+                                    <button type="submit">修改</button>
+                                    <input type="hidden" name="name" value="<%- client[i][0] %>">
+                                    <input type="hidden" name="id_card" value="<%- client[i][1] %>">
+                                    <input type="hidden" name="telephone" value="<%- client[i][2] %>">
+                                    <input type="hidden" name="address" value="<%- client[i][3] %>">
+                                    <input type="hidden" name="age" value="<%- client[i][4] %>">
+                                    <input type="hidden" name="profession" value="<%- client[i][5] %>">
+                                    <input type="hidden" name="date" value="<%- client[i][6] %>">
+                                    <input type="hidden" name="picture" value="<%- client[i][7] %>">
+                                    <input type="hidden" name="status" value="<%- client[i][8] %>">
+                                </form>
+                            </td>
+                            <td>
+                                <form action="/deleteClient" autocomplete="off" method="post">
+                                    <button type="submit">刪除</button>
+                                    <input type="hidden" name="id_card" value="<%- client[i][1] %>">
+                                </form>
+                            </td>
+
+
+                            <% } %>
+                        </tbody>
+                    </table>
+                </span>
+
+            </div>
+        </div>
+
+    </div> <!-- /container -->
+    <script>
+        var tmp;
+        window.onbeforeprint = function () {
+            tmp = document.body.innerHTML;
+            document.body.innerHTML = document.getElementById('div1').innerHTML;
+        }
+        window.onafterprint = function () {
+            document.body.innerHTML = tmp;
+        }
+
+        function printme() {
+
+            window.print();
+
+        }
+    </script>
+</body>
+
+</html>
