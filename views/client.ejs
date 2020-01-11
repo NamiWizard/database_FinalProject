@@ -61,16 +61,16 @@
             <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                     <li class="nav-item active">
-                        <a class="nav-link" href="#">客戶基本資料 <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="/">客戶基本資料 </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="./order_record">客戶訂貨記錄</a>
+                        <a class="nav-link" href="/orderRecord">客戶訂貨記錄</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link " href="#">公司進貨資料</a>
+                        <a class="nav-link " href="/companyPurchase">公司進貨資料</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link " href="#">公司應收帳款資料</a>
+                        <a class="nav-link " href="/companyAccount">公司應收帳款資料</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
@@ -106,11 +106,11 @@
                         <div class="col">
                             <label>客戶姓名</label>
                             <% if(update){ %>
-                            <input type="text" class="form-control" placeholder="name" id="name" name="name"
+                            <input type="text" class="form-control" placeholder="Name" id="name" name="name"
                                 value="<%- client[0][0] %>">
 
                             <% } else { %>
-                            <input type="text" class="form-control" placeholder="name" id="name" name="name">
+                            <input type="text" class="form-control" placeholder="Name" id="name" name="name">
                             <%} %>
 
 
@@ -132,11 +132,11 @@
                         <div class="col">
                             <label>電話</label>
                             <% if(update){ %>
-                            <input type="text" class="form-control" placeholder="telephone" id="telephone"
+                            <input type="text" class="form-control" placeholder="Telephone" id="telephone"
                                 name="telephone" value="<%- client[0][2] %>">
 
                             <% } else { %>
-                            <input type="text" class="form-control" placeholder="telephone" id="telephone"
+                            <input type="text" class="form-control" placeholder="Telephone" id="telephone"
                                 name="telephone">
                             <%} %>
                         </div>
@@ -144,11 +144,11 @@
                     <div class="form-group">
                         <label>住址</label>
                         <% if(update){ %>
-                        <input type="text" class="form-control" placeholder="address" id="address" name="address"
+                        <input type="text" class="form-control" placeholder="Address" id="address" name="address"
                             value="<%- client[0][3] %>">
 
                         <% } else { %>
-                        <input type="text" class="form-control" pplaceholder="address" id="address" name="address">
+                        <input type="text" class="form-control" placeholder="Address" id="address" name="address">
                         <%} %>
 
                     </div>
@@ -156,21 +156,21 @@
                         <div class="col">
                             <label>年齡</label>
                             <% if(update){ %>
-                            <input type="text" class="form-control" placeholder="age" id="age" name="age"
+                            <input type="text" class="form-control" placeholder="Age" id="age" name="age"
                                 value="<%- client[0][4] %>">
 
                             <% } else { %>
-                            <input type="text" class="form-control" placeholder="age" id="age" name="age">
+                            <input type="text" class="form-control" placeholder="Age" id="age" name="age">
                             <%} %>
                         </div>
                         <div class="col">
                             <label>職業</label>
                             <% if(update){ %>
-                            <input type="text" class="form-control" pplaceholder="profession" id="profession"
+                            <input type="text" class="form-control" placeholder="Profession" id="profession"
                                 name="profession" value="<%- client[0][5] %>">
 
                             <% } else { %>
-                            <input type="text" class="form-control" placeholder="profession" id="profession"
+                            <input type="text" class="form-control" placeholder="Profession" id="profession"
                                 name="profession">
                             <%} %>
 
@@ -178,11 +178,11 @@
                         <div class="col">
                             <label>登載日期</label>
                             <% if(update){ %>
-                            <input type="date" class="form-control" placeholder="date" id="date" name="date"
+                            <input type="date" class="form-control" placeholder="Date" id="date" name="date"
                                 value="<%- client[0][6] %>">
 
                             <% } else { %>
-                            <input type="date" class="form-control" placeholder="date" id="date" name="date">
+                            <input type="date" class="form-control" placeholder="Date" id="date" name="date">
                             <%} %>
 
 
@@ -231,12 +231,12 @@
             </div>
             <div class="col-12 col-md-6">
                 <form class="form-inline my-2 my-lg-0" action="/searchClient" autocomplete="off" method="post">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"
+                    <input class="form-control mr-sm-2" type="search" placeholder="輸入身分證字號查詢" aria-label="Search"
                         name="id_card">
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
 
                 </form>
-                <span id='div1'>
+                <span id='print'>
                     <table class="table" id="clientList">
                         <thead class="thead-light">
                             <tr>
@@ -265,7 +265,8 @@
                             <td> <%- client[i][3] %></td>
                             <td> <%- client[i][4] %></td>
                             <td> <%- client[i][5] %></td>
-                            <td> <%- client[i][6] %></td>
+                            <!--原client[i][6]但為了讓DataBase傳過來不是單純的數值，而是處理過的，因此在app.js改寫-->
+                            <td> <%- client[i][9] %></td>
                             <td> <%- client[i][7] %></td>
                             <td> <%- client[i][8] %></td>
                             <td>
@@ -303,7 +304,7 @@
         var tmp;
         window.onbeforeprint = function () {
             tmp = document.body.innerHTML;
-            document.body.innerHTML = document.getElementById('div1').innerHTML;
+            document.body.innerHTML = document.getElementById('print').innerHTML;
         }
         window.onafterprint = function () {
             document.body.innerHTML = tmp;

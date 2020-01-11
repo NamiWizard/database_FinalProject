@@ -60,17 +60,17 @@
 
             <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <li class="nav-item ">
+                        <a class="nav-link" href="/">客戶基本資料</a>
+                    </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="./order_record.ejs">客戶基本資料 <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="/orderRecord">客戶訂貨記錄</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">客戶訂貨記錄</a>
+                        <a class="nav-link " href="/companyPurchase">公司進貨資料</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link " href="#">公司進貨資料</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link " href="#">公司應收帳款資料</a>
+                        <a class="nav-link " href="/companyAccount">公司應收帳款資料</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
@@ -98,212 +98,251 @@
                 <h1>客戶訂貨記錄</h1>
             </div>
         </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12 col-md-5">
+                    <form action="/addOrderRecord" autocomplete="off" method="post">
 
-        <div class="row">
-            <div class="col-12 col-md-6">
-                <form action="/addorder_record" autocomplete="off" method="post">
-                    <div class="form-row">
-                        <div class="col">
-                            <label>客戶姓名</label>
-                            <% if(update){ %>
-                            <input type="text" class="form-control" placeholder="name" id="name" name="name"
-                                value="<%- order_record[0][0] %>">
+                        <div class="form-row">
+                            <div class="col">
+                                <label>身分證字號</label>
+                                <% if(update){ %>
+                                <input type="text" class="form-control" placeholder="Id Card" id="id_card"
+                                    name="id_card" value="<%- order_record[0][0] %>" readonly>
 
-                            <% } else { %>
-                            <input type="text" class="form-control" placeholder="name" id="name" name="name">
-                            <%} %>
+                                <% } else { %>
+                                <input type="text" class="form-control" placeholder="Id Card" id="id_card"
+                                    name="id_card">
+                                <%} %>
 
+                            </div>
+                            <div class="col">
 
-                        </div>
-
-                    </div>
-                    <div class="form-row">
-                        <div class="col ">
-                            <label>身分證字號</label>
-                            <% if(update){ %>
-                            <input type="text" class="form-control" placeholder="ID card" id="id_card" name="id_card"
-                                value="<%- order_record[0][1] %>" readonly>
-
-                            <% } else { %>
-                            <input type="text" class="form-control" placeholder="ID card" id="id_card" name="id_card">
-                            <%} %>
-
-                        </div>
-                        <div class="col">
-                            <label>電話</label>
-                            <% if(update){ %>
-                            <input type="text" class="form-control" placeholder="telephone" id="telephone"
-                                name="telephone" value="<%- order_record[0][2] %>">
-
-                            <% } else { %>
-                            <input type="text" class="form-control" placeholder="telephone" id="telephone"
-                                name="telephone">
-                            <%} %>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>住址</label>
-                        <% if(update){ %>
-                        <input type="text" class="form-control" placeholder="address" id="address" name="address"
-                            value="<%- order_record[0][3] %>">
-
-                        <% } else { %>
-                        <input type="text" class="form-control" pplaceholder="address" id="address" name="address">
-                        <%} %>
-
-                    </div>
-                    <div class="form-row">
-                        <div class="col">
-                            <label>年齡</label>
-                            <% if(update){ %>
-                            <input type="text" class="form-control" placeholder="age" id="age" name="age"
-                                value="<%- order_record[0][4] %>">
-
-                            <% } else { %>
-                            <input type="text" class="form-control" placeholder="age" id="age" name="age">
-                            <%} %>
-                        </div>
-                        <div class="col">
-                            <label>職業</label>
-                            <% if(update){ %>
-                            <input type="text" class="form-control" pplaceholder="profession" id="profession"
-                                name="profession" value="<%- order_record[0][5] %>">
-
-                            <% } else { %>
-                            <input type="text" class="form-control" placeholder="profession" id="profession"
-                                name="profession">
-                            <%} %>
-
-                        </div>
-                        <div class="col">
-                            <label>登載日期</label>
-                            <% if(update){ %>
-                            <input type="date" class="form-control" placeholder="date" id="date" name="date"
-                                value="<%- order_record[0][6] %>">
-
-                            <% } else { %>
-                            <input type="date" class="form-control" placeholder="date" id="date" name="date">
-                            <%} %>
-
-
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="col-8">
-                            <label>照片</label>
-
-                            <div class="custom-file">
-
-                                <input type="file" class="custom-file-input" id="picture" name="picture">
-                                <label class="custom-file-label" for="customFile">Choose file</label>
                             </div>
                         </div>
-                        <div class="col">
-                            <label>消費狀態</label>
-                            <% if(update){ %>
-                            <select class="custom-select mr-sm-2" id="status" name="status">
+                        <div class="form-row">
+                            <div class="col">
+                                <label>訂貨日期</label>
+                                <% if(update){ %>
+                                <input type="date" class="form-control" placeholder="Order Date" id="order_date"
+                                    name="order_date" value="<%- order_record[0][1] %>">
 
-                                <option value="正常">正常</option>
-                                <option value="停用">停用</option>
-                            </select>
+                                <% } else { %>
+                                <input type="date" class="form-control" placeholder="Order Date" id="order_date"
+                                    name="order_date">
+                                <%} %>
+
+
+                            </div>
+                            <div class="col">
+                                <label>預計遞交日期</label>
+                                <% if(update){ %>
+                                <input type="date" class="form-control" placeholder="Expected Delivery Date"
+                                    id="expected_delivery_date" name="expected_delivery_date"
+                                    value="<%- order_record[0][2] %>">
+
+                                <% } else { %>
+                                <input type="date" class="form-control" placeholder="Expected Delivery Date"
+                                    id="expected_delivery_date" name="expected_delivery_date">
+                                <%} %>
+
+                            </div>
+                            <div class="col">
+                                <label>實際遞交日期</label>
+                                <% if(update){ %>
+                                <input type="date" class="form-control" placeholder="Actual Delivery Date"
+                                    id="actual_delivery_date" name="actual_delivery_date"
+                                    value="<%- order_record[0][3] %>">
+
+                                <% } else { %>
+                                <input type="date" class="form-control" placeholder="Actual Delivery Date"
+                                    id="actual_delivery_date" name="actual_delivery_date">
+                                <%} %>
+
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>訂貨品名</label>
+                            <% if(update){ %>
+                            <input type="text" class="form-control" placeholder="Product Name" id="product_name"
+                                name="product_name" value="<%- order_record[0][4] %>">
 
                             <% } else { %>
-                            <select class="custom-select mr-sm-2" id="status" name="status">
-
-                                <option value="正常">正常</option>
-                                <option value="停用">停用</option>
-                            </select>
+                            <input type="text" class="form-control" placeholder="Product Name" id="product_name"
+                                name="product_name">
                             <%} %>
 
                         </div>
+                        <div class="form-row">
+                            <div class="col">
+                                <label>單位</label>
+                                <% if(update){ %>
+                                <input type="text" class="form-control" placeholder="Unit" id="unit" name="unit"
+                                    value="<%- order_record[0][5] %>">
 
-                    </div>
-                    <% if(update){ %>
-                    <input type="hidden" name="update" value="true">
+                                <% } else { %>
+                                <input type="text" class="form-control" placeholder="Unit" id="unit" name="unit">
+                                <%} %>
 
-                    <% } else { %>
+                            </div>
+                            <div class="col">
+                                <label>數量</label>
+                                <% if(update){ %>
+                                <input type="text" class="form-control" placeholder="Amount" id="amount" name="amount"
+                                    value="<%- order_record[0][6] %>">
 
-                    <input type="hidden" name="update" value="false">
-                    <%} %>
-                    <button type="submit" class="btn btn-primary " style="margin-top: 20px;"
-                        value="submit">Submit</button>
-                </form>
-            </div>
-            <div class="col-12 col-md-6">
-                <form class="form-inline my-2 my-lg-0" action="/searchorder_record" autocomplete="off" method="post">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"
-                        name="id_card">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                                <% } else { %>
+                                <input type="text" class="form-control" placeholder="Amount" id="amount" name="amount">
+                                <%} %>
 
-                </form>
-                <span id='div1'>
-                    <table class="table" id="order_recordList">
+                            </div>
+                            <div class="col">
+                                <label>單價</label>
+                                <% if(update){ %>
+                                <input type="text" class="form-control" placeholder="Price" id="price" name="price"
+                                    value="<%- order_record[0][7] %>">
+
+                                <% } else { %>
+                                <input type="text" class="form-control" placeholder="Price" id="price" name="price">
+                                <%} %>
+
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col">
+                                <label>訂貨金額</label>
+                                <% if(update){ %>
+                                <input type="text" class="form-control" placeholder="Order Price" id="order_price"
+                                    name="order_price" value="<%- order_record[0][8] %>">
+
+                                <% } else { %>
+                                <input type="text" class="form-control" placeholder="Order Price" id="order_price"
+                                    name="order_price">
+                                <%} %>
+
+                            </div>
+                            <div class="col">
+                                <label>供應商名稱</label>
+                                <% if(update){ %>
+                                <input type="text" class="form-control" placeholder="Supplier" id="supplier"
+                                    name="supplier" value="<%- order_record[0][9] %>">
+
+                                <% } else { %>
+                                <input type="text" class="form-control" placeholder="Supplier" id="supplier"
+                                    name="supplier">
+                                <%} %>
+
+                            </div>
+                            <div class="col">
+                                <label>供應商編號</label>
+                                <% if(update){ %>
+                                <input type="text" class="form-control" placeholder="Suppler Number" id="suppler_number"
+                                    name="suppler_number" value="<%- order_record[0][10] %>">
+
+                                <% } else { %>
+                                <input type="text" class="form-control" placeholder="Suppler Number" id="suppler_number"
+                                    name="suppler_number">
+                                <%} %>
+
+                            </div>
+                        </div>
+
+
+                        <% if(update){ %>
+                        <input type="hidden" name="update" value="true">
+
+                        <% } else { %>
+
+                        <input type="hidden" name="update" value="false">
+                        <%} %>
+                        <button type="submit" class="btn btn-primary " style="margin-top: 20px;"
+                            value="submit">Submit</button>
+                    </form>
+                </div>
+                <div class="col-12 col-md-7">
+                    <form class="form-inline my-2 my-lg-0" action="/searchOrderRecord" autocomplete="off" method="post">
+                        <input class="form-control mr-sm-2" type="search" placeholder="輸入身分證字號查詢" aria-label="Search"
+                            name="id_card">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                    </form>
+                    <table class="table" id="orderRecordList">
                         <thead class="thead-light">
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">客戶姓名</th>
                                 <th scope="col">身分證字號</th>
-                                <th scope="col">電話</th>
-                                <th scope="col">住址</th>
-                                <th scope="col">年齡</th>
-                                <th scope="col">職業</th>
-                                <th scope="col">登載日期</th>
-                                <th scope="col">照片</th>
-                                <th scope="col">消費狀態</th>
-                                <th></th>
-                                <th></th>
+                                <th scope="col">訂貨日期</th>
+                                <th scope="col">預計遞交日期</th>
+                                <th scope="col">實際遞交日期</th>
+                                <th scope="col">訂貨品名</th>
+                                <th scope="col">單位</th>
+                                <th scope="col">數量</th>
+                                <th scope="col">單價</th>
+                                <th scope="col">訂貨金額</th>
+                                <th scope="col">供應商名稱</th>
+                                <th scope="col">供應商編號</th>
+                                <th scope="col"></th>
+                                <!--         <th scope="col"></th>                  -->
+
                             </tr>
                         </thead>
                         <tbody>
-
-
                             <% for(var i = 0 ; order_record.length>i;i++){ %>
                             <th scope="row"><%- i+1 %></th>
                             <td> <%- order_record[i][0] %></td>
-                            <td> <%- order_record[i][1] %></td>
-                            <td> <%- order_record[i][2] %></td>
-                            <td> <%- order_record[i][3] %></td>
+
+                            <td> <%- order_record[i][11] %></td>
+                            <td> <%- order_record[i][12] %></td>
+                            <td> <%- order_record[i][13] %></td>
                             <td> <%- order_record[i][4] %></td>
                             <td> <%- order_record[i][5] %></td>
                             <td> <%- order_record[i][6] %></td>
                             <td> <%- order_record[i][7] %></td>
                             <td> <%- order_record[i][8] %></td>
+                            <td> <%- order_record[i][9] %></td>
+                            <td> <%- order_record[i][10] %></td>
                             <td>
-                                <form action="/updateorder_record" autocomplete="off" method="post">
+                                <form action="/updateOrderRecord" autocomplete="off" method="post">
                                     <button type="submit">修改</button>
-                                    <input type="hidden" name="name" value="<%- order_record[i][0] %>">
-                                    <input type="hidden" name="id_card" value="<%- order_record[i][1] %>">
-                                    <input type="hidden" name="telephone" value="<%- order_record[i][2] %>">
-                                    <input type="hidden" name="address" value="<%- order_record[i][3] %>">
-                                    <input type="hidden" name="age" value="<%- order_record[i][4] %>">
-                                    <input type="hidden" name="profession" value="<%- order_record[i][5] %>">
-                                    <input type="hidden" name="date" value="<%- order_record[i][6] %>">
-                                    <input type="hidden" name="picture" value="<%- order_record[i][7] %>">
-                                    <input type="hidden" name="status" value="<%- order_record[i][8] %>">
+                                    <input type="hidden" name="id_card" value="<%- order_record[i][0] %>">
+                                    <input type="hidden" name="order_date" value="<%- order_record[i][1] %>">
+                                    <input type="hidden" name="expected_delivery_date"
+                                        value="<%- order_record[i][2] %>">
+                                    <input type="hidden" name="actual_delivery_date" value="<%- order_record[i][3] %>">
+                                    <input type="hidden" name="product_name" value="<%- order_record[i][4] %>">
+                                    <input type="hidden" name="unit" value="<%- order_record[i][5] %>">
+                                    <input type="hidden" name="amount" value="<%- order_record[i][6] %>">
+                                    <input type="hidden" name="price" value="<%- order_record[i][7] %>">
+                                    <input type="hidden" name="order_price" value="<%- order_record[i][8] %>">
+                                    <input type="hidden" name="supplier" value="<%- order_record[i][9] %>">
+                                    <input type="hidden" name="suppler_number" value="<%- order_record[i][10] %>">
                                 </form>
                             </td>
-                            <td>
-                                <form action="/deleteorder_record" autocomplete="off" method="post">
+                            <!--
+                             <td>
+                                <form action="/deleteOrderRecord" autocomplete="off" method="post">
                                     <button type="submit">刪除</button>
-                                    <input type="hidden" name="id_card" value="<%- order_record[i][1] %>">
+                                    <input type="hidden" name="id_card" value="<%- order_record[i][0] %>">
                                 </form>
                             </td>
+                            -->
+
 
 
                             <% } %>
                         </tbody>
                     </table>
-                </span>
-
+                </div>
             </div>
-        </div>
+        </div> <!-- /container -->
+
 
     </div> <!-- /container -->
     <script>
         var tmp;
         window.onbeforeprint = function () {
             tmp = document.body.innerHTML;
-            document.body.innerHTML = document.getElementById('div1').innerHTML;
+            document.body.innerHTML = document.getElementById('print').innerHTML;
         }
         window.onafterprint = function () {
             document.body.innerHTML = tmp;

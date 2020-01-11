@@ -60,17 +60,17 @@
 
             <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <li class="nav-item ">
+                        <a class="nav-link" href="/">客戶基本資料</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/orderRecord">客戶訂貨記錄</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="/companyPurchase">公司進貨資料</a>
+                    </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="#">客戶基本資料 <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="./order_record">客戶訂貨記錄</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link " href="#">公司進貨資料</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link " href="#">公司應收帳款資料</a>
+                        <a class="nav-link " href="/companyAccount">公司應收帳款資料</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
@@ -95,129 +95,81 @@
 
         <div class="row">
             <div class="col">
-                <h1>客戶基本資料</h1>
+                <h1>公司應收帳款資料</h1>
             </div>
         </div>
 
         <div class="row">
             <div class="col-12 col-md-6">
-                <form action="/addClient" autocomplete="off" method="post">
+                <form action="/addCompanyAccount" autocomplete="off" method="post">
                     <div class="form-row">
                         <div class="col">
                             <label>客戶姓名</label>
                             <% if(update){ %>
-                            <input type="text" class="form-control" placeholder="name" id="name" name="name"
-                                value="<%- client[0][0] %>">
+                            <input type="text" class="form-control" placeholder="Name" id=" client_name"
+                                name="client_name" value="<%-  company_account[0][0] %>">
 
                             <% } else { %>
-                            <input type="text" class="form-control" placeholder="name" id="name" name="name">
+                            <input type="text" class="form-control" placeholder="Name" id=" client_name"
+                                name="client_name">
                             <%} %>
-
-
                         </div>
-
-                    </div>
-                    <div class="form-row">
-                        <div class="col ">
+                        <div class="col">
                             <label>身分證字號</label>
                             <% if(update){ %>
-                            <input type="text" class="form-control" placeholder="ID card" id="id_card" name="id_card"
-                                value="<%- client[0][1] %>" readonly>
+                            <input type="text" class="form-control" placeholder="ID card" id=" client_id"
+                                name="client_id" value="<%-  company_account[0][1] %>" readonly>
 
                             <% } else { %>
-                            <input type="text" class="form-control" placeholder="ID card" id="id_card" name="id_card">
-                            <%} %>
-
-                        </div>
-                        <div class="col">
-                            <label>電話</label>
-                            <% if(update){ %>
-                            <input type="text" class="form-control" placeholder="telephone" id="telephone"
-                                name="telephone" value="<%- client[0][2] %>">
-
-                            <% } else { %>
-                            <input type="text" class="form-control" placeholder="telephone" id="telephone"
-                                name="telephone">
+                            <input type="text" class="form-control" placeholder="ID card" id=" client_id"
+                                name="client_id">
                             <%} %>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label>住址</label>
-                        <% if(update){ %>
-                        <input type="text" class="form-control" placeholder="address" id="address" name="address"
-                            value="<%- client[0][3] %>">
 
-                        <% } else { %>
-                        <input type="text" class="form-control" pplaceholder="address" id="address" name="address">
-                        <%} %>
-
-                    </div>
                     <div class="form-row">
                         <div class="col">
-                            <label>年齡</label>
+                            <label>應收金額</label>
                             <% if(update){ %>
-                            <input type="text" class="form-control" placeholder="age" id="age" name="age"
-                                value="<%- client[0][4] %>">
+                            <input type="text" class="form-control" placeholder="Receivable Account"
+                                id="receivable_account" name="receivable_account" value="<%-  company_account[0][2] %>">
 
                             <% } else { %>
-                            <input type="text" class="form-control" placeholder="age" id="age" name="age">
+                            <input type="text" class="form-control" placeholder="Receivable Account"
+                                id="receivable_account" name="receivable_account">
                             <%} %>
                         </div>
+
                         <div class="col">
-                            <label>職業</label>
+                            <label>應收日期</label>
                             <% if(update){ %>
-                            <input type="text" class="form-control" pplaceholder="profession" id="profession"
-                                name="profession" value="<%- client[0][5] %>">
+                            <input type="date" class="form-control" placeholder="Date" id="receivable_date"
+                                name="receivable_date" value="<%-  company_account[0][3] %>">
 
                             <% } else { %>
-                            <input type="text" class="form-control" placeholder="profession" id="profession"
-                                name="profession">
+                            <input type="date" class="form-control" placeholder="Date" id="receivable_date"
+                                name="receivable_date">
                             <%} %>
+
 
                         </div>
                         <div class="col">
-                            <label>登載日期</label>
+                            <label>代催收金額</label>
                             <% if(update){ %>
-                            <input type="date" class="form-control" placeholder="date" id="date" name="date"
-                                value="<%- client[0][6] %>">
+                            <input type="text" class="form-control" placeholder="Unreceivable Account"
+                                id="unreceivable_account" name="unreceivable_account"
+                                value="<%-  company_account[0][4] %>">
 
                             <% } else { %>
-                            <input type="date" class="form-control" placeholder="date" id="date" name="date">
+                            <input type="text" class="form-control" placeholder="Unreceivable Account"
+                                id="unreceivable_account" name="unreceivable_account">
                             <%} %>
-
-
                         </div>
                     </div>
-                    <div class="form-row">
-                        <div class="col-8">
-                            <label>照片</label>
 
-                            <div class="custom-file">
 
-                                <input type="file" class="custom-file-input" id="picture" name="picture">
-                                <label class="custom-file-label" for="customFile">Choose file</label>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <label>消費狀態</label>
-                            <% if(update){ %>
-                            <select class="custom-select mr-sm-2" id="status" name="status">
 
-                                <option value="正常">正常</option>
-                                <option value="停用">停用</option>
-                            </select>
 
-                            <% } else { %>
-                            <select class="custom-select mr-sm-2" id="status" name="status">
-
-                                <option value="正常">正常</option>
-                                <option value="停用">停用</option>
-                            </select>
-                            <%} %>
-
-                        </div>
-
-                    </div>
                     <% if(update){ %>
                     <input type="hidden" name="update" value="true">
 
@@ -230,71 +182,64 @@
                 </form>
             </div>
             <div class="col-12 col-md-6">
-                <form class="form-inline my-2 my-lg-0" action="/searchClient" autocomplete="off" method="post">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"
-                        name="id_card">
+                <form class="form-inline my-2 my-lg-0" action="/searchCompanyAccount" autocomplete="off" method="post">
+                    <input class="form-control mr-sm-2" type="search" placeholder="輸入身分證字號查詢" aria-label="Search"
+                        name="client_id">
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-
                 </form>
-                <span id='div1'>
-                    <table class="table" id="clientList">
+                <span id='print'>
+                    <table class="table" id="company_accountList">
                         <thead class="thead-light">
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">客戶姓名</th>
                                 <th scope="col">身分證字號</th>
-                                <th scope="col">電話</th>
-                                <th scope="col">住址</th>
-                                <th scope="col">年齡</th>
-                                <th scope="col">職業</th>
-                                <th scope="col">登載日期</th>
-                                <th scope="col">照片</th>
-                                <th scope="col">消費狀態</th>
-                                <th></th>
-                                <th></th>
+                                <th scope="col">應收金額</th>
+                                <th scope="col">應收日期</th>
+                                <th scope="col">代催收金額</th>
+                                <th scope="col"></th>
+                                <!--         <th scope="col"></th>                  -->
+
                             </tr>
                         </thead>
                         <tbody>
+                            <tr>
 
+                                <% for(var i = 0 ;  company_account.length>i;i++){ %>
+                                <th scope="row"><%- i+1 %></th>
+                                <td> <%-  company_account[i][0] %></td>
+                                <td> <%-  company_account[i][1] %></td>
+                                <td> <%-  company_account[i][2] %></td>
+                                <td> <%-  company_account[i][5] %></td>
+                                <td> <%-  company_account[i][4] %></td>
+                                <td>
+                                    <form action="/updateCompanyAccount" autocomplete="off" method="post">
+                                        <button type="submit">修改</button>
+                                        <input type="hidden" name="client_name" value="<%-  company_account[i][0] %>">
+                                        <input type="hidden" name="client_id" value="<%-  company_account[i][1] %>">
+                                        <input type="hidden" name="receivable_account"
+                                            value="<%-  company_account[i][2] %>">
+                                        <input type="hidden" name="receivable_date"
+                                            value="<%-  company_account[i][3] %>">
+                                        <input type="hidden" name="unreceivable_account"
+                                            value="<%-  company_account[i][4] %>">
 
-                            <% for(var i = 0 ; client.length>i;i++){ %>
-                            <th scope="row"><%- i+1 %></th>
-                            <td> <%- client[i][0] %></td>
-                            <td> <%- client[i][1] %></td>
-                            <td> <%- client[i][2] %></td>
-                            <td> <%- client[i][3] %></td>
-                            <td> <%- client[i][4] %></td>
-                            <td> <%- client[i][5] %></td>
-                            <td> <%- client[i][6] %></td>
-                            <td> <%- client[i][7] %></td>
-                            <td> <%- client[i][8] %></td>
-                            <td>
-                                <form action="/updateClient" autocomplete="off" method="post">
-                                    <button type="submit">修改</button>
-                                    <input type="hidden" name="name" value="<%- client[i][0] %>">
-                                    <input type="hidden" name="id_card" value="<%- client[i][1] %>">
-                                    <input type="hidden" name="telephone" value="<%- client[i][2] %>">
-                                    <input type="hidden" name="address" value="<%- client[i][3] %>">
-                                    <input type="hidden" name="age" value="<%- client[i][4] %>">
-                                    <input type="hidden" name="profession" value="<%- client[i][5] %>">
-                                    <input type="hidden" name="date" value="<%- client[i][6] %>">
-                                    <input type="hidden" name="picture" value="<%- client[i][7] %>">
-                                    <input type="hidden" name="status" value="<%- client[i][8] %>">
-                                </form>
-                            </td>
-                            <td>
-                                <form action="/deleteClient" autocomplete="off" method="post">
-                                    <button type="submit">刪除</button>
-                                    <input type="hidden" name="id_card" value="<%- client[i][1] %>">
-                                </form>
-                            </td>
+                                    </form>
+                                </td>
+                                <!--全部刪除
+                                <td>
+                                    <form action="/deleteCompanyAccount" autocomplete="off" method="post">
+                                        <button type="submit">刪除</button>
+                                        <input type="hidden" name="client_id" value="<%-  company_account[i][1] %>">
+                                    </form>
+                                </td>
 
-
-                            <% } %>
+                              -->
+                                <% } %>
+                            </tr>
                         </tbody>
                     </table>
                 </span>
-
             </div>
         </div>
 
@@ -303,7 +248,7 @@
         var tmp;
         window.onbeforeprint = function () {
             tmp = document.body.innerHTML;
-            document.body.innerHTML = document.getElementById('div1').innerHTML;
+            document.body.innerHTML = document.getElementById('print').innerHTML;
         }
         window.onafterprint = function () {
             document.body.innerHTML = tmp;
