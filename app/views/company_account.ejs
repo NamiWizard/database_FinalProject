@@ -1,0 +1,259 @@
+<!--客戶基本資料資料庫：須能新增資料、刪除資料、修改資料、查詢資料及列印資料，其中
+新增資料：新增客戶資料，客戶均為自然人，不必考慮以公司名稱購買者。
+刪除資料：係將資料之消費狀態由「正常」改成「停用」，而不是真的刪除。
+修改資料：當客戶資料與事實不符時，例如，住址或電話變更，用以修改。
+查詢資料：必須至少能以身分證字號查詢。
+列印資料：能依查詢要求列印查詢結果資料。
+-->
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v3.8.5">
+    <title>資料庫實做題目(三)</title>
+
+    <!-- Bootstrap core CSS -->
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <script type="text/javascript"
+        src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=h9B3vfHHH5zCFrXFln1kn9AgbYOMdSfB1ATA5lbuX65vaS3mdrDnKUKP_f3QyGLqoUF9rQGZ0QOqZIn9Dll2RtWDMZDytZ4D8TFb9jQFjEo"
+        charset="UTF-8"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous">
+    </script>
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+
+</head>
+
+<body class="py-4">
+    <div class="container-fluid">
+        <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">期末資料庫專題第三題</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
+                aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <li class="nav-item ">
+                        <a class="nav-link" href="/">客戶基本資料</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/orderRecord">客戶訂貨記錄</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="/companyPurchase">公司進貨資料</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link " href="/companyAccount">公司應收帳款資料</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="/userClient">使用者介面_客戶基本資料</a>
+                    </li>
+                </ul>
+            </div>
+            <form class="form-inline my-2 my-lg-0">
+                <button class="btn btn-outline-success my-2 my-sm-0" onclick="printme()" rel="external nofollow"
+                    target="_self">列印搜尋結果</button>
+            </form>
+        </nav>
+    </div>
+    <div class="container-fluid" style="padding-top:50px ;">
+
+        <div class="row">
+            <div class="col">
+                <h1>公司應收帳款資料</h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <form action="/addCompanyAccount" autocomplete="off" method="post">
+                    <div class="form-row">
+                        <div class="col">
+                            <label>客戶姓名</label>
+                            <% if(update){ %>
+                            <input type="text" class="form-control" placeholder="Name" id=" client_name"
+                                name="client_name" value="<%-  company_account[0][0] %>">
+
+                            <% } else { %>
+                            <input type="text" class="form-control" placeholder="Name" id=" client_name"
+                                name="client_name">
+                            <%} %>
+                        </div>
+                        <div class="col">
+                            <label>身分證字號</label>
+                            <% if(update){ %>
+                            <input type="text" class="form-control" placeholder="ID card" id=" client_id"
+                                name="client_id" value="<%-  company_account[0][1] %>" readonly>
+
+                            <% } else { %>
+                            <input type="text" class="form-control" placeholder="ID card" id=" client_id"
+                                name="client_id">
+                            <%} %>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col">
+                            <label>應收金額</label>
+                            <% if(update){ %>
+                            <input type="text" class="form-control" placeholder="Receivable Account"
+                                id="receivable_account" name="receivable_account" value="<%-  company_account[0][2] %>">
+
+                            <% } else { %>
+                            <input type="text" class="form-control" placeholder="Receivable Account"
+                                id="receivable_account" name="receivable_account">
+                            <%} %>
+                        </div>
+
+                        <div class="col">
+                            <label>應收日期</label>
+                            <% if(update){ %>
+                            <input type="date" class="form-control" placeholder="Date" id="receivable_date"
+                                name="receivable_date" value="<%-  company_account[0][3] %>">
+
+                            <% } else { %>
+                            <input type="date" class="form-control" placeholder="Date" id="receivable_date"
+                                name="receivable_date">
+                            <%} %>
+
+
+                        </div>
+                        <div class="col">
+                            <label>代催收金額</label>
+                            <% if(update){ %>
+                            <input type="text" class="form-control" placeholder="Unreceivable Account"
+                                id="unreceivable_account" name="unreceivable_account"
+                                value="<%-  company_account[0][4] %>">
+
+                            <% } else { %>
+                            <input type="text" class="form-control" placeholder="Unreceivable Account"
+                                id="unreceivable_account" name="unreceivable_account">
+                            <%} %>
+                        </div>
+                    </div>
+
+
+
+
+                    <% if(update){ %>
+                    <input type="hidden" name="update" value="true">
+
+                    <% } else { %>
+
+                    <input type="hidden" name="update" value="false">
+                    <%} %>
+                    <button type="submit" class="btn btn-primary " style="margin-top: 20px;"
+                        value="submit">Submit</button>
+                </form>
+            </div>
+            <div class="col-12 col-md-6">
+                <form class="form-inline my-2 my-lg-0" action="/searchCompanyAccount" autocomplete="off" method="post">
+                    <input class="form-control mr-sm-2" type="search" placeholder="輸入身分證字號查詢" aria-label="Search"
+                        name="client_id">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form>
+                <span id='print'>
+                    <table class="table" id="company_accountList">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">客戶姓名</th>
+                                <th scope="col">身分證字號</th>
+                                <th scope="col">應收金額</th>
+                                <th scope="col">應收日期</th>
+                                <th scope="col">代催收金額</th>
+                                <th scope="col"></th>
+                                <!--         <th scope="col"></th>                  -->
+
+                            </tr>
+                        </thead>
+                        <tbody>
+
+
+                            <% for(var i = 0 ;  company_account.length>i;i++){ %>
+                            <tr>
+                                <th scope="row"><%- i+1 %></th>
+                                <td> <%-  company_account[i][0] %></td>
+                                <td> <%-  company_account[i][1] %></td>
+                                <td> <%-  company_account[i][2] %></td>
+                                <td> <%-  company_account[i][5] %></td>
+                                <td> <%-  company_account[i][4] %></td>
+                                <td>
+                                    <form action="/updateCompanyAccount" autocomplete="off" method="post">
+                                        <button type="submit">修改</button>
+                                        <input type="hidden" name="client_name" value="<%-  company_account[i][0] %>">
+                                        <input type="hidden" name="client_id" value="<%-  company_account[i][1] %>">
+                                        <input type="hidden" name="receivable_account"
+                                            value="<%-  company_account[i][2] %>">
+                                        <input type="hidden" name="receivable_date"
+                                            value="<%-  company_account[i][3] %>">
+                                        <input type="hidden" name="unreceivable_account"
+                                            value="<%-  company_account[i][4] %>">
+
+                                    </form>
+                                </td>
+                                <!--全部刪除
+                                <td>
+                                    <form action="/deleteCompanyAccount" autocomplete="off" method="post">
+                                        <button type="submit">刪除</button>
+                                        <input type="hidden" name="client_id" value="<%-  company_account[i][1] %>">
+                                    </form>
+                                </td>
+
+                              -->
+                            </tr>
+                            <% } %>
+
+                        </tbody>
+                    </table>
+                </span>
+            </div>
+        </div>
+
+    </div> <!-- /container -->
+    <script>
+        var tmp;
+        window.onbeforeprint = function () {
+            tmp = document.body.innerHTML;
+            document.body.innerHTML = document.getElementById('print').innerHTML;
+        }
+        window.onafterprint = function () {
+            document.body.innerHTML = tmp;
+        }
+
+        function printme() {
+
+            window.print();
+
+        }
+    </script>
+</body>
+
+</html>
